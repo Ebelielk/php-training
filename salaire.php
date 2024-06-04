@@ -1,46 +1,50 @@
 <?php
 
-    $overtime_1 = 1.3; 
-    $overtime_2 = 1.5; 
-    $weekend_rate = 2.0;    
+$erreur = NULL;
+
+function calculateSalary($hour_rate, $normal_hour_week, $week_worked, $weekend_worked) {
+  // Définition des taux
+  $overtime_1 = 1.3;
+  $overtime_2 = 1.5;
+  $weekend_rate = 2; // Renommé pour plus de clarté (le salaire du week-end utilise un multiplicateur)
+
+  // Calcul des heures supplémentaires
+  $overtime_hours = max(0, $week_worked - $normal_hour_week);
+
+  // Séparation des types d'heures supplémentaires (en utilisant min et max pour plus de clarté)
+  $overtime_hours_1 = min($overtime_hours, 6);
+  $overtime_hours_2 = max(0, $overtime_hours - 6);
+
+  // Calcul des heures normales
+  $normal_hours = min($week_worked, $normal_hour_week);
+
+  // Calcul des rémunérations
+  $normal_pay = $normal_hours * $hour_rate;
+  $overtime_pay_1 = $overtime_hours_1 * $hour_rate * $overtime_1;
+  $overtime_pay_2 = $overtime_hours_2 * $hour_rate * $overtime_2;
+  $weekend_pay = $weekend_worked * $hour_rate * $weekend_rate;
+
+  // Calcul du salaire total
+  $total = $normal_pay + $overtime_pay_1 + $overtime_pay_2 + $weekend_pay;
+
+  return $total;
+}
 
 
-if (isset($_GET['hour_rate']) && isset($_GET['normal_hour_week']) && isset($_GET['week_worked']) && isset($_GET['week_worked'])) {
-   
-    $hour_rate = (float)$_GET['hour_rate'];
-    $normal_hour_week = (int)$_GET['normal_hour_week'];
-    $week_worked = (int)$_GET['week_worked'];
-    $weekend_worked = (int)$_GET['weekend_worked'];
+if (isset($_POST['hour_rate']) && isset($_POST['normal_hour_week']) && isset($_POST['week_worked']) && isset($_POST['weekend_worked'])) {
+  $hour_rate = (float)$_POST['hour_rate'];
+  $normal_hour_week = (int)$_POST['normal_hour_week'];
+  $week_worked = (int)$_POST['week_worked'];
+  $weekend_worked = (int)$_POST['weekend_worked'];
 
-    
-    
-    $overtime_hours = $week_worked - $normal_hour_week;
-    if ($overtime_hours < 0) {
-        $overtime_hours = 0;
-    }
+}
 
-    
-    $overtime_hours_1 = $overtime_hours;
-    if ($overtime_hours_1 > 6) {
-        $overtime_hours_1 = 6;
-    }
-    $overtime_hours_2 = $overtime_hours - 6;
-    if ($overtime_hours_2 < 0) {
-        $overtime_hours_2 = 0;
-    }
+if($hour_rate <= 0 || $normal_hour_week < 40 || $week_worked < 0 || $weekend_worked < 0){
+    $erreur = 'valeurs invalide';
+}
 
-   
-    $normal_hours = $week_worked;
-    if ($normal_hours > $normal_hour_week) {
-        $normal_hours = $normal_hour_week;
-    }
-    $normal_pay = $normal_hours * $hour_rate;
-
-    $overtime_pay_1 = $overtime_hours_1 * $hour_rate * $overtime_1;
-    $overtime_pay_2 = $overtime_hours_2 * $hour_rate * $overtime_2;
-    $weekend_pay = $weekend_worked * $hour_rate * $weekend_rate;
-
-    $total = $normal_pay + $overtime_pay_1 + $overtime_pay_2 + $weekend_pay;
+if($erreur == NULL){
+    $total = calculateSalary($hour_rate, $normal_hour_week, $week_worked, $weekend_worked);
 }
 
 ?>
@@ -54,7 +58,7 @@ if (isset($_GET['hour_rate']) && isset($_GET['normal_hour_week']) && isset($_GET
 <body>
     <button><a href="index.php">Retour</a></button>
     <p></p>
-    <form action="" method="get">
+    <form action="" method="post">
         <label for="hour_rate">Salaire horaire :</label>
         <input type="number" id="hour_rate" name="hour_rate" required><br><br>
 
@@ -72,7 +76,9 @@ if (isset($_GET['hour_rate']) && isset($_GET['normal_hour_week']) && isset($_GET
 
     <?php if(isset($total) and $total != 0): ?>
        <p>le salaire mensuel est de : <?= $total ?> dollars</p>
-   <?php endif; ?>
+   <?php else: ?>
+    <p><?= $erreur?></p>
+    <?php endif;?>
 </body>
 </html>
 

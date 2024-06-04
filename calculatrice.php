@@ -6,18 +6,17 @@ if(isset($_POST['number_1']) and isset($_POST['number_2']) and isset($_POST['ope
     $number_2 =  isset($_POST['number_2']) ? (float)$_POST['number_2'] : NULL;
     $operation = $_POST['operation'] ?? NULL;
 
-switch($operation){
-    case '+' : $result = $number_1 + $number_2;
-    break;
-    case '-': $result = $number_1 - $number_2;
-    break;
-    case '*': $result = $number_1 * $number_2;
-    break;
-    case '/' : $result = $number_1 / $number_2;
-    break;
-    default : 
-    break;
-}}
+
+    $retour = match ($operation) {
+        '+' => $result = $number_1 + $number_2,
+        '-' => $result = $number_1 - $number_2,
+        '*' => $result = $number_1 * $number_2,
+        '/' => $result = $number_1 / $number_2,
+        default => '+',
+    };
+}
+
+
 
 ?>
 
