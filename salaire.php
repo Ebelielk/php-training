@@ -3,28 +3,28 @@
 $erreur = NULL;
 
 function calculateSalary($hour_rate, $normal_hour_week, $week_worked, $weekend_worked) {
-  // Définition des taux
+  
   $overtime_1 = 1.3;
   $overtime_2 = 1.5;
-  $weekend_rate = 2; // Renommé pour plus de clarté (le salaire du week-end utilise un multiplicateur)
+  $weekend_rate = 2; 
 
-  // Calcul des heures supplémentaires
+  
   $overtime_hours = max(0, $week_worked - $normal_hour_week);
 
-  // Séparation des types d'heures supplémentaires (en utilisant min et max pour plus de clarté)
+  
   $overtime_hours_1 = min($overtime_hours, 6);
   $overtime_hours_2 = max(0, $overtime_hours - 6);
 
-  // Calcul des heures normales
+  
   $normal_hours = min($week_worked, $normal_hour_week);
 
-  // Calcul des rémunérations
+  
   $normal_pay = $normal_hours * $hour_rate;
   $overtime_pay_1 = $overtime_hours_1 * $hour_rate * $overtime_1;
   $overtime_pay_2 = $overtime_hours_2 * $hour_rate * $overtime_2;
   $weekend_pay = $weekend_worked * $hour_rate * $weekend_rate;
 
-  // Calcul du salaire total
+  
   $total = $normal_pay + $overtime_pay_1 + $overtime_pay_2 + $weekend_pay;
 
   return $total;
@@ -38,12 +38,10 @@ if (isset($_POST['hour_rate']) && isset($_POST['normal_hour_week']) && isset($_P
   $weekend_worked = (int)$_POST['weekend_worked'];
 
 }
-
-if($hour_rate <= 0 || $normal_hour_week < 40 || $week_worked < 0 || $weekend_worked < 0){
-    $erreur = 'valeurs invalide';
-}
-
-if($erreur == NULL){
+if ($hour_rate <= 0 || $normal_hour_week < 40 || $week_worked < 0 || $weekend_worked < 0) {
+    $erreur = "Valeurs invalides";
+} else {
+    // Calcul du salaire
     $total = calculateSalary($hour_rate, $normal_hour_week, $week_worked, $weekend_worked);
 }
 
