@@ -26,7 +26,7 @@ $table->addRow(['Genre', $gender]);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Informations Soumises</title>
+    <title>Informations Soumises par l'utilisateur</title>
 </head>
 <body>
     <h1>Informations Soumises</h1>
