@@ -6,7 +6,7 @@ require_once 'classe/select.php';
 require_once 'classe/checkbox.php';
 require_once 'classe/radio.php';
 require_once 'classe/textarea.php';
-require_once '/classe/session.php';
+require_once 'classe/session.php';
 require_once 'classe/cookie.php';
 
 Session::start();
@@ -40,7 +40,7 @@ $country = Session::get('country', '');
 $newsletter = Session::get('newsletter', '');
 $gender = Session::get('gender', '');
 
-$username = Cookie::get('username', 'Invité');
+$username = Cookie::get('username', 'M/Mme');
 
 $form = new Form('index.php', 'POST');
 $form->addElement(new Input('text', 'name', $name, ['placeholder' => 'Nom']));

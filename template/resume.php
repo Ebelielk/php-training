@@ -26,10 +26,10 @@ $table->addRow(['Genre', $gender]);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Résumé des Informations</title>
+    <title>Informations Soumises</title>
 </head>
 <body>
-    <h1>Résumé des Informations Soumises</h1>
+    <h1>Informations Soumises</h1>
     <?php echo $table->render(); ?>
 </body>
 </html>
